@@ -1,6 +1,6 @@
 //
 // POC : Using concepts to create an interface.
-// As usual, with use Shapes for that.
+// As usual, will use Shapes-like POC for that.
 
 #include <iostream>
 
