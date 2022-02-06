@@ -5,18 +5,12 @@ set( CMAKE_CXX_STANDARD 23 )
 
 include_directories( . )
 
+if ( MSVC )
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /permissive- /W4")
+else()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2b -Wall -Wextra -Werror")
+endif()
+
 add_executable( interface_with_concepts
 	src/main.cpp
 )
-
-if ( MSVC )
-	#[[ https://docs.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-by-category?view=msvc-170 ]]
-	target_compile_options( interface_with_concepts
-		BEFORE
-		PRIVATE "/std:c++latest"
-		PRIVATE "/permissive-"
-		PRIVATE "/W4"
-	)
-else()
-	message( SEND_ERROR "This project is not configured for this compiler." )
-endif()
