@@ -18,7 +18,7 @@ public:
 
 
 	// { T::SHAPE_TYPE } -> std::same_as<ShapeType const>; 
-	static constexpr ShapeType SHAPE_TYPE = ShapeType::Rectangle;
+	const ShapeType SHAPE_TYPE = ShapeType::Rectangle;
 
 
 	// { const_shape.get_area() } -> std::same_as<float>;
@@ -31,7 +31,7 @@ public:
 	// { const_shape.get_perimeter() } -> std::same_as<float>;
 	[[nodiscard]] inline constexpr auto get_perimeter() const -> float
 	{
-		return (m_length + m_width) * 2;
+		return ( m_length + m_width ) * 2;
 	}
 
 
