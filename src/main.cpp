@@ -17,8 +17,8 @@ static inline auto update_width( CIShape auto &shape, float const width ) -> voi
 static inline auto display_perimeter_and_area( CIShape auto const &shape ) -> void
 {
 	auto const index = static_cast<std::underlying_type_t<ShapeType>>( shape.SHAPE_TYPE );
-	printf( "Shape ID %u - Perimeter : %.2f\n", index, shape.get_perimeter() );
-	printf( "Shape ID %u - Area : %.2f\n", index, shape.get_area() );
+	printf( "%s ID %u - Perimeter : %.2f\n", shape.shapeName, index, shape.get_perimeter() );
+	printf( "%s ID %u - Area : %.2f\n", shape.shapeName, index, shape.get_area() );
 }
 
 

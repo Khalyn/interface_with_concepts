@@ -13,7 +13,6 @@ enum class ShapeType
 };
 
 
-
 template<typename T> concept EqualityComparable =
 requires ( T const &shape )
 {
@@ -21,31 +20,45 @@ requires ( T const &shape )
 };
 
 
+// This can test the existence of the static variable/method.
+// It's successfully differentiate static over non-static member variable/method, but there must be an easier way to do it.
+template<typename T, T value> concept CIStaticMember = requires { value; };
+
+
 // Interface definition
 template<typename T> concept CIShape =
 requires ( T &shape, T const &const_shape )
 {
-	// Static variables
-	// TODO: Despite using T::*, this version also accept non-static public variables. ( like in Rectangle.hpp )
-	// |--> Read again the concepts/contraints documentation and fix the issue.
-	// |--> Once fixed, add a new example with a non-static variable.
-	// |--> Add a static non-const and const methods in CIShape, to see if there is a similar issue with methods.
-	{ T::SHAPE_TYPE } -> std::same_as<ShapeType const>;
+	// Check for a public static variable. ( const optional as all static member variables have to be const anyway )
+	requires CIStaticMember<ShapeType, T::SHAPE_TYPE>;
 
-	// mandatory const methods
+	// Check for a public const variable.
+	{ shape.shapeName }		-> std::same_as<char const *const>;
+
+	// Check for a public variable.
+	{ shape.unsafeValue }	-> std::same_as<int>;
+
+
+	// Check for a public static method, which returns a ShapeType.
+	requires CIStaticMember<ShapeType, T::get_shape_type()>;
+
+
+	// Check for a public const method.
+	// Need to use the const_shape version to require the const version of the function.
 	// If the method isn't const, the constraint won't be satisfied
 	{ const_shape.get_area() }		-> std::same_as<float>;
 	{ const_shape.get_perimeter() }	-> std::same_as<float>;
 
-	// methods
+
+	// Check for a public method
+	// Could be const, but not required.
 	// Require a float parameter, and no return value
 	{ shape.set_width( std::declval<float>() ) }	-> std::same_as<void>;
 	{ shape.set_length( std::declval<float>() ) }	-> std::same_as<void>;
 
+
 	// Can requires another concept to be implemented
 	requires EqualityComparable<T>;
-
-	// TODO : Add example of a static methods and static const methods
 };
 
 

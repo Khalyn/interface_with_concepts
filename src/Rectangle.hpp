@@ -17,8 +17,21 @@ public:
 	//
 
 
-	// { T::SHAPE_TYPE } -> std::same_as<ShapeType const>; 
-	const ShapeType SHAPE_TYPE = ShapeType::Rectangle;
+	// requires CIStaticMember<ShapeType, T::SHAPE_TYPE>; 
+	static const ShapeType SHAPE_TYPE = ShapeType::Rectangle;
+
+	// { shape.shapeName }		-> std::same_as<char const *const>;
+	char const *const shapeName = "Rectangle";
+
+	// { shape.unsafeValue }	-> std::same_as<int>;
+	int unsafeValue = 1;
+
+
+	// requires CIStaticMember<ShapeType, T::get_shape_type()>;
+	static constexpr auto get_shape_type() -> ShapeType
+	{
+		return SHAPE_TYPE;
+	}
 
 
 	// { const_shape.get_area() } -> std::same_as<float>;
